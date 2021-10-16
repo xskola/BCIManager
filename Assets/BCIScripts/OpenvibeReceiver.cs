@@ -23,14 +23,14 @@ public class OpenvibeReceiver : MonoBehaviour
     int sampleCount;
     int channelCount;
 
-    public void setup()
+    public void Setup()
     {
         tcpSocket = new TcpClient(BCIManager.receiver_connectionHost, BCIManager.receiver_connectionPort);
         tcpStream = tcpSocket.GetStream();
         socketReady = true;
     }
 
-    public void close()
+    public void Close()
     {
         if (!socketReady)
             return;
@@ -38,15 +38,15 @@ public class OpenvibeReceiver : MonoBehaviour
         socketReady = false;
     }
 
-    public void maintain()
+    public void Maintain()
     {
         if (!tcpStream.CanRead)
         {
-            setup();
+            Setup();
         }
     }
 
-    private void readHeader()
+    private void ReadHeader()
     {
         int headerSize = 32;
         byte[] buffer = new byte[headerSize];
@@ -81,7 +81,7 @@ public class OpenvibeReceiver : MonoBehaviour
         sampleChannelSize = sampleCount * channelCount * sizeof(double);
     }
 
-    public OpenvibeSignal read()
+    public OpenvibeSignal Read()
     {
         if (!socketReady)
             throw new InvalidOperationException("Cannot read from Openvibe: socket not ready");
@@ -90,7 +90,7 @@ public class OpenvibeReceiver : MonoBehaviour
         {
 
             if (!headerRead)
-                readHeader();
+                ReadHeader();
 
             if (getSignal)
             {

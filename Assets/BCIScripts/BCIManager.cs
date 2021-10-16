@@ -32,6 +32,7 @@ public class BCIManager : MonoBehaviour
      * 
      */
 
+    public static bool START_AUTOMATICALLY = true;				// disable if you want to start BCIManager manually using Initialize() method
     public static bool connectionEnabled = true;                                // if disabled, all Openvibe operations will be disabled
 
     private static string OPENVIBE_RUNNER_PATH = "OpenvibeScripts\\openvibe-record.cmd";                // path to Openvibe runner in the Unity project
@@ -66,13 +67,19 @@ public class BCIManager : MonoBehaviour
     System.Diagnostics.Process ovApp = new System.Diagnostics.Process();
 
     void Start()
+	{
+		if(START_AUTOMATICALLY)
+			Initialize();
+	}
+	
+	public void Initialize()
     {
         openvibeASConnection = gameObject.AddComponent<OpenvibeASConnection>();
         if (RECEIVE_DATA)
             openvibeReceiverConnection = gameObject.AddComponent<OpenvibeReceiver>();
 
         if (!DO_NOT_START_OPENVIBE)
-            startOpenvibe();
+            StartOpenvibe();
         
         if (connectionEnabled)
         {
@@ -81,16 +88,16 @@ public class BCIManager : MonoBehaviour
         }
     }
 
-    public void connectOpenvibeAS()
+    public void ConnectOpenvibeAS()
     {
         if (openvibeASConnection.socketReady == false)
         {
             Debug.Log("BCIManager: Attempting to connect to Openvibe AS...");
             try
             {
-                openvibeASConnection.setup();
+                openvibeASConnection.Setup();
                 Debug.Log("BCIManager: Openvibe AS connected successfully");
-                sendInitializationStim();
+                SendInitializationStim();
             }
             catch (Exception e)
             {
@@ -99,7 +106,7 @@ public class BCIManager : MonoBehaviour
                 if (BCIManager.QUIT_ON_CONNECTION_ERROR)
                 {
                     BCIManager.connectionEnabled = false;
-                    Logger.logEvent("Quitting application due to errors while connecting to Openvibe AS");  // delete this line in case you do not want to use Logger in your app
+                    Logger.LogEvent("Quitting application due to errors while connecting to Openvibe AS");  // delete this line in case you do not want to use Logger in your app
                     Application.Quit();
                     Debug.Log("BCIManager: Stopping in-editor application run");
                     UnityEditor.EditorApplication.isPlaying = false;
@@ -112,14 +119,14 @@ public class BCIManager : MonoBehaviour
         }
     }
 
-    public void connectOpenvibeReceiver()
+    public void ConnectOpenvibeReceiver()
     {
         if (openvibeReceiverConnection.socketReady == false)
         {
             Debug.Log("BCIManager: Attempting to connect to Openvibe Designer...");
             try
             {
-                openvibeReceiverConnection.setup();
+                openvibeReceiverConnection.Setup();
                 Debug.Log("BCIManager: Openvibe Designer connected successfully");
             }
             catch (Exception e)
@@ -129,7 +136,7 @@ public class BCIManager : MonoBehaviour
                 if (BCIManager.QUIT_ON_CONNECTION_ERROR)
                 {
                     BCIManager.connectionEnabled = false;
-                    Logger.logEvent("Quitting application due to errors while connecting to Openvibe Designer");  // delete this line in case you do not want to use Logger in your app
+                    Logger.LogEvent("Quitting application due to errors while connecting to Openvibe Designer");  // delete this line in case you do not want to use Logger in your app
                     Application.Quit();
                     Debug.Log("BCIManager: Stopping in-editor application run");
                     UnityEditor.EditorApplication.isPlaying = false;
@@ -142,55 +149,55 @@ public class BCIManager : MonoBehaviour
         }
     }
 
-    public static void disconnectOpenvibe()
+    public static void DisconnectOpenvibe()
     {
         Debug.Log("BCIManager: Disconnecting from Openvibe AS");
-        openvibeASConnection.close();
+        openvibeASConnection.Close();
         if(RECEIVE_DATA)
-            openvibeReceiverConnection.close();
+            openvibeReceiverConnection.Close();
     }
 
-    public static void sendStim(ulong stimcode)
+    public static void SendStim(ulong stimcode)
     {
         if (connectionEnabled)
-            openvibeASConnection.sendStimCode(stimcode);
+            openvibeASConnection.SendStimCode(stimcode);
         else
             Debug.Log("BCIManager: Not sending stimulation: connectionEnabled=false");
     }
 
-    public static void sendStim(int stimcode)
+    public static void SendStim(int stimcode)
     {
-        BCIManager.sendStim((ulong)stimcode);
+        BCIManager.SendStim((ulong)stimcode);
     }
 
-    public static bool receiverReady()
+    public static bool ReceiverReady()
     {
         return openvibeReceiverConnection.socketReady;
     }
 
-    public static OpenvibeSignal receiveData()
+    public static OpenvibeSignal ReceiveData()
     {
-        return openvibeReceiverConnection.read();
+        return openvibeReceiverConnection.Read();
     }
 
-    static void sendInitializationStim()
+    static void SendInitializationStim()
     {
         Debug.Log("BCIManager: Sending initial stimulation code with value " + BCIManager.INITIAL_STIMCODE.ToString());
-        BCIManager.sendStim(BCIManager.INITIAL_STIMCODE);
+        BCIManager.SendStim(BCIManager.INITIAL_STIMCODE);
     }
 
-    void startOpenvibe()
+    void StartOpenvibe()
     {
         if (connectionEnabled)
         {
             ovApp.StartInfo.FileName = OPENVIBE_RUNNER_PATH;
             ovApp.StartInfo.Arguments = OPENVIBE_SCENARIO_NAME + " " + OPENVIBE_INSTALLATION_PATH;
             ovApp.Start();
-            StartCoroutine(checkOpenvibeDesignerRunning());
+            StartCoroutine(CheckOpenvibeDesignerRunning());
         }
     }
 
-    IEnumerator checkOpenvibeDesignerRunning()
+    IEnumerator CheckOpenvibeDesignerRunning()
     {
         yield return new WaitForSeconds(2.5f);
         System.Diagnostics.Process[] pname = System.Diagnostics.Process.GetProcessesByName("openvibe-designer");
@@ -202,7 +209,7 @@ public class BCIManager : MonoBehaviour
             if (BCIManager.QUIT_ON_CONNECTION_ERROR)
             {
                 BCIManager.connectionEnabled = false;
-                Logger.logEvent("Quitting application due to errors while running Openvibe");  // delete this line in case you do not want to use Logger in your app
+                Logger.LogEvent("Quitting application due to errors while running Openvibe");  // delete this line in case you do not want to use Logger in your app
                 Application.Quit();
                 Debug.Log("BCIManager: Stopping in-editor application run");
                 UnityEditor.EditorApplication.isPlaying = false;
@@ -210,13 +217,13 @@ public class BCIManager : MonoBehaviour
         }
     }
 
-    public static void disconnectAndQuit()
+    public static void DisconnectAndQuit()
     {
         if (BCIManager.connectionEnabled)
         {
             Debug.Log("BCIManager: Sending ExperimentStop stimulation");
-            BCIManager.sendStim(OpenvibeStimCodes.OVTK_StimulationId_ExperimentStop);
-            BCIManager.disconnectOpenvibe();
+            BCIManager.SendStim(OpenvibeStimCodes.OVTK_StimulationId_ExperimentStop);
+            BCIManager.DisconnectOpenvibe();
             BCIManager.connectionEnabled = false;
         }       
         Application.Quit();
@@ -228,8 +235,8 @@ public class BCIManager : MonoBehaviour
         if (BCIManager.connectionEnabled)
         {
             Debug.Log("BCIManager: Sending ExperimentStop stimulation");
-            BCIManager.sendStim(OpenvibeStimCodes.OVTK_StimulationId_ExperimentStop);
-            BCIManager.disconnectOpenvibe();
+            BCIManager.SendStim(OpenvibeStimCodes.OVTK_StimulationId_ExperimentStop);
+            BCIManager.DisconnectOpenvibe();
         }
     }
 }

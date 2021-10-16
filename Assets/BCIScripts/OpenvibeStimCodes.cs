@@ -35,4 +35,6 @@
     public const ulong OVTK_GDF_End_Of_Session = 0x3F2;
     public const ulong OVTK_GDF_Left_Hand_Movement = 0x441;
     public const ulong OVTK_GDF_Right_Hand_Movement = 0x442;
+    public const ulong OVTK_GDF_Artifact_Movement = 0x104;
+    public const ulong OVTK_StimulationId_Label_00 = 0x00008100;
 }

@@ -13,25 +13,25 @@ public class ExampleScript : MonoBehaviour
 {
     void Start()
     {
-        Logger.logEvent("Application start");
+        Logger.LogEvent("Application start");
     }
 
     void Update()
     {
         if (Input.GetKeyDown("s"))              // if key "s" is pressed
         {
-            Logger.logEvent("EEG phase 1");     // outputs logText to log file (created in Logger class)
-            BCIManager.sendStim(1);             // sends stimulation code "1" to Openvibe Acquisition Server
+            Logger.LogEvent("EEG phase 1");     // outputs logText to log file (created in Logger class)
+            BCIManager.SendStim(1);             // sends stimulation code "1" to Openvibe Acquisition Server
         }
 
         if (Input.GetKeyDown("b"))
         {
-            Logger.logEvent("Beginning of the recording");
-            BCIManager.sendStim(OpenvibeStimCodes.OVTK_StimulationId_ExperimentStart);
+            Logger.LogEvent("Beginning of the recording");
+            BCIManager.SendStim(OpenvibeStimCodes.OVTK_StimulationId_ExperimentStart);
         }
 
         if (Input.GetKeyDown("q"))
-            BCIManager.disconnectAndQuit();     // "nice" quit method handled by BCIManager
+            BCIManager.DisconnectAndQuit();     // "nice" quit method handled by BCIManager
                                                 // to be used in case "regular quit" does not work properly
     }
 }

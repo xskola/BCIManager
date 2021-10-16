@@ -10,14 +10,14 @@ public class OpenvibeASConnection : MonoBehaviour {
     TcpClient tcpSocket;
     NetworkStream tcpStream;
 
-    public void setup()
+    public void Setup()
     {
         tcpSocket = new TcpClient(BCIManager.connectionHost, BCIManager.connectionPort);
         tcpStream = tcpSocket.GetStream();
         socketReady = true;
     }
 
-    public string read()
+    public string Read()
     {
         String result = "";
         if (tcpStream.DataAvailable)
@@ -29,7 +29,7 @@ public class OpenvibeASConnection : MonoBehaviour {
         return result;
     }
 
-    public void close()
+    public void Close()
     {
         if (!socketReady)
             return;
@@ -37,17 +37,17 @@ public class OpenvibeASConnection : MonoBehaviour {
         socketReady = false;
     }
 
-    public void maintain()
+    public void Maintain()
     {
         if (!tcpStream.CanRead)
-            setup();
+            Setup();
     }
 
-    public void sendStimCode(ulong code)
+    public void SendStimCode(ulong code)
     {
         if (!socketReady)
         {
-            Debug.Log("BCIManager: Could not send the stimulation: socket not ready");
+            Debug.Log("BCIManager: Could not send the stimulation: socket not Ready");
             return;
         }
 

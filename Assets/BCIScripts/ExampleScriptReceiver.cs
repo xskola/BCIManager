@@ -13,14 +13,14 @@ public class ExampleScriptReceiver : MonoBehaviour
 {
     void Start()
     {
-        Logger.logEvent("Application start");
+        Logger.LogEvent("Application start");
     }
 
     void Update()
     {
-        if (BCIManager.receiverReady())
+        if (BCIManager.ReceiverReady())
         {
-            OpenvibeSignal data = BCIManager.receiveData();                   // OpenvibeSignal data class is defined in OpenvibeReceiver.cs file
+            OpenvibeSignal data = BCIManager.ReceiveData();                   // OpenvibeSignal data class is defined in OpenvibeReceiver.cs file
             if(data != null)                                                  // check if new data were received in current frame
                 for (int sample = 0; sample < data.samples; sample++)         // each OpenvibeSignal matrix can contain more than 1 sample
                     for (int channel = 0; channel < data.channels; channel++) // number of channels corresponds to the number of channels in Openvibe scenario
@@ -31,18 +31,18 @@ public class ExampleScriptReceiver : MonoBehaviour
 
         if (Input.GetKeyDown("s"))              // if key "s" is pressed
         {
-            Logger.logEvent("EEG phase 1");     // outputs logText to log file (created in Logger class)
-            BCIManager.sendStim(1);             // sends stimulation code "1" to Openvibe Acquisition Server
+            Logger.LogEvent("EEG phase 1");     // outputs logText to log file (created in Logger class)
+            BCIManager.SendStim(1);             // sends stimulation code "1" to Openvibe Acquisition Server
         }
 
         if (Input.GetKeyDown("b"))
         {
-            Logger.logEvent("Beginning of the recording");
-            BCIManager.sendStim(OpenvibeStimCodes.OVTK_StimulationId_ExperimentStart);
+            Logger.LogEvent("Beginning of the recording");
+            BCIManager.SendStim(OpenvibeStimCodes.OVTK_StimulationId_ExperimentStart);
         }
 
         if (Input.GetKeyDown("q"))
-            BCIManager.disconnectAndQuit();     // "nice" quit method handled by BCIManager
+            BCIManager.DisconnectAndQuit();     // "nice" quit method handled by BCIManager
                                                 // to be used in case "regular quit" (i.e., stopping/closing the app) does not work properly
     }
 }

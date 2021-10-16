@@ -13,19 +13,19 @@ public class Logger : MonoBehaviour
      * 
      * By default, it logs date/time, application run time, and whatever you want to put into the log.
      * 
-     * Coroutine writeLog() is started at the beginning of the application run and writes the log to disk
+     * Coroutine WriteLog() is started at the beginning of the application run and writes the log to disk
      * every LOG_FILE_SAVING_INTERVAL seconds (default = 2), preventing data loss in case of unexpected exit.
      *
      * LOG_FILE_SEPARATOR (default = ;) sets the separation character of output CSV files.
      * 
      * output:      file named "log-YEAR-MONTH-DAY-HOUR-MINUTE-SECOND.csv"
-     * interface:   Logger.logEvent("message to log")
+     * interface:   Logger.LogEvent("message to log")
      * 
     */
 
     int LOG_FILE_SAVING_INTERVAL = 2;
     static string LOG_FILE_SEPARATOR = ";";
-    static bool SHOW_LOG_IN_UNITY_DEBUG = true;
+    static bool SHOW_LOG_IN_UNITY_DEBUG = false;
 
     string logFileName = @"log-";
     public static List<String> log = new List<string>();
@@ -40,17 +40,23 @@ public class Logger : MonoBehaviour
         startTime = (double)(DateTime.Now.Ticks) / 10000000f;
         logFileName += postfix + ".csv";
 
-        StartCoroutine(writeLog());
-       
-        log.Add("datetime" + LOG_FILE_SEPARATOR + "timestamp" + LOG_FILE_SEPARATOR + "event");
+        StartCoroutine(WriteLog());
     }
 
     void Update()
     {
         runTime = (((double)(DateTime.Now.Ticks) / 10000000f) - startTime);
     }
+	
+	public static void LogHeader(string additional = "")
+	{
+		string header = "datetime" + LOG_FILE_SEPARATOR + "timestamp" + LOG_FILE_SEPARATOR + "event";
+		if(additional != "")
+			header += LOG_FILE_SEPARATOR + additional;
+		log.Add(header);
+	}	
 
-    IEnumerator writeLog()
+    IEnumerator WriteLog()
     {
         yield return new WaitForSeconds(1);
         while (true)
@@ -74,7 +80,7 @@ public class Logger : MonoBehaviour
         }
     }
 
-    public static void logEvent(string desc)
+    public static void LogEvent(string desc)
     {
         DateTime now = DateTime.Now;
         string datetime = now.ToString("u", DateTimeFormatInfo.InvariantInfo);
@@ -88,6 +94,6 @@ public class Logger : MonoBehaviour
         log.Add(logline);
 
         if (SHOW_LOG_IN_UNITY_DEBUG)
-            Debug.Log("Logger: logEvent '" + desc + "' at " + datetime);
+            Debug.Log("Logger: LogEvent '" + desc + "' at " + datetime);
     }
 }
