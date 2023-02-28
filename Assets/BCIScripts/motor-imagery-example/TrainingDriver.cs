@@ -339,7 +339,7 @@ public class TrainingDriver : MonoBehaviour {
             logline += extraLogLine;
             extraLogLine = "";
         }
-        Logger.LogEvent(logline);
+        Logger.Add(logline);
     }
 
     void FeedbackContinuous(double status)
@@ -553,7 +553,7 @@ public class TrainingDriver : MonoBehaviour {
 		string postfix = System.DateTime.Now.ToString("MM-dd-HH-mm-ss", System.Globalization.CultureInfo.InvariantCulture);
         string trialLogHeader = "Time; TrialNum; Side; TrialTotalTime; TrialCorrectTime; TrialIncorrectTime; Accuracy; Other";
         triallogfilename += postfix + ".csv";
-        Logger.LogHeader("Time; TrialNum; Side; TrainingState; TrialTotalTime; LRClassification; MIClassification; TrialCorrectTime; TrialIncorrectTime; anim_speed");
+        Logger.Add("Time; TrialNum; Side; TrainingState; TrialTotalTime; LRClassification; MIClassification; TrialCorrectTime; TrialIncorrectTime; anim_speed");
         string settingsInfo = "demo mode: " + demoMode.ToString() + "\nnumber of trials per class: " + (totalNumberOfTrials/2).ToString() + "\nmin_anim_speed: " + min_anim_speed.ToString() + "\nmax_anim_speed: " + max_anim_speed.ToString() + "\nTIME_ONSET: " + TIME_ONSET.ToString() + "\nTIME_TOTAL: " + TIME_TOTAL.ToString() + "\nTIME_TIMEOUT: " + TIME_TIMEOUT.ToString() + "\nTIME_REST_C: " + TIME_REST_C.ToString() + "\nTIME_REST_L: " + TIME_REST_L.ToString() +  "\n";
         triallog.Add(settingsInfo);
         triallog.Add(trialLogHeader);

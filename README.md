@@ -20,7 +20,7 @@ If you are new to Openvibe, there is a copy of signal_monitoring.xml scenario in
 
 ## Usage
 
-Two files need to be attached to a game object: BCIManager.cs and Logger.cs. BCIManager takes care of running Openvibe Designer pre-loaded with the recording scenario (this part records the EEG signals to a GDF file). Logger creates a simple CSV logfile. Logger is not strictly required for running BCIManager.
+BCIManager.cs file need to be attached to a game object. BCIManager takes care of running Openvibe Designer pre-loaded with the recording scenario (this part records the EEG signals to a GDF file). Logger creates a simple CSV logfile. Logger is not strictly required for running BCIManager.
 
 You need Openvibe Acquisition Server (AS) running and in Play mode before starting Unity app with BCIManager. For debugging, just start the AS and choose Generic Oscillator as a driver, click Connect, then click Play. For experiments, the driver for your EEG device must be selected and configured.
 

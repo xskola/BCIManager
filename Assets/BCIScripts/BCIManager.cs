@@ -106,7 +106,7 @@ public class BCIManager : MonoBehaviour
                 if (BCIManager.QUIT_ON_CONNECTION_ERROR)
                 {
                     BCIManager.connectionEnabled = false;
-                    Logger.LogEvent("Quitting application due to errors while connecting to Openvibe AS");  // delete this line in case you do not want to use Logger in your app
+                    Logger.Add("Quitting application due to errors while connecting to Openvibe AS");  // delete this line in case you do not want to use Logger in your app
                     Application.Quit();
                     Debug.Log("BCIManager: Stopping in-editor application run");
                     UnityEditor.EditorApplication.isPlaying = false;
@@ -136,7 +136,7 @@ public class BCIManager : MonoBehaviour
                 if (BCIManager.QUIT_ON_CONNECTION_ERROR)
                 {
                     BCIManager.connectionEnabled = false;
-                    Logger.LogEvent("Quitting application due to errors while connecting to Openvibe Designer");  // delete this line in case you do not want to use Logger in your app
+                    Logger.Add("Quitting application due to errors while connecting to Openvibe Designer");  // delete this line in case you do not want to use Logger in your app
                     Application.Quit();
                     Debug.Log("BCIManager: Stopping in-editor application run");
                     UnityEditor.EditorApplication.isPlaying = false;
@@ -209,7 +209,7 @@ public class BCIManager : MonoBehaviour
             if (BCIManager.QUIT_ON_CONNECTION_ERROR)
             {
                 BCIManager.connectionEnabled = false;
-                Logger.LogEvent("Quitting application due to errors while running Openvibe");  // delete this line in case you do not want to use Logger in your app
+                Logger.Add("Quitting application due to errors while running Openvibe");  // delete this line in case you do not want to use Logger in your app
                 Application.Quit();
                 Debug.Log("BCIManager: Stopping in-editor application run");
                 UnityEditor.EditorApplication.isPlaying = false;

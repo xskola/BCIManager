@@ -13,7 +13,8 @@ public class ExampleScriptReceiver : MonoBehaviour
 {
     void Start()
     {
-        Logger.LogEvent("Application start");
+        Logger.NewLog(this, "main", new string[] { "Event" }, true);
+        Logger.Add("Application start");
     }
 
     void Update()
@@ -31,13 +32,13 @@ public class ExampleScriptReceiver : MonoBehaviour
 
         if (Input.GetKeyDown("s"))              // if key "s" is pressed
         {
-            Logger.LogEvent("EEG phase 1");     // outputs logText to log file (created in Logger class)
+            Logger.Add("EEG phase 1");     // outputs logText to log file (created in Logger class)
             BCIManager.SendStim(1);             // sends stimulation code "1" to Openvibe Acquisition Server
         }
 
         if (Input.GetKeyDown("b"))
         {
-            Logger.LogEvent("Beginning of the recording");
+            Logger.Add("Beginning of the recording");
             BCIManager.SendStim(OpenvibeStimCodes.OVTK_StimulationId_ExperimentStart);
         }
 
